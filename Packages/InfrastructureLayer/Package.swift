@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "DataLayer",
+    name: "InfrastructureLayer",
     platforms: [
           .iOS(.v14),
           .macOS(.v12)
@@ -12,26 +12,28 @@ let package = Package(
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "DataLayer",
-            targets: ["DataLayer"]),
+            name: "InfrastructureLayer",
+            targets: ["InfrastructureLayer"]),
     ],
     dependencies: [
-        .package(path: "../DomainLayer"),
-        .package(path: "../InfrastructureLayer/Networking/InfrastructureLayer")
+        .package(url: "https://github.com/OAuthSwift/OAuthSwift.git", from: "2.2.0"),
+        .package(url: "https://github.com/evgenyneu/keychain-swift.git", from: "24.0.0"),
+        .package(url: "https://github.com/ParableHealth/URLRequestBuilder.git", from: "0.0.2")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "DataLayer",
+            name: "InfrastructureLayer",
             dependencies: [
-                "DomainLayer",
-                "InfrastructureLayer"
+                "OAuthSwift",
+                .product(name: "KeychainSwift", package: "keychain-swift"),
+                "URLRequestBuilder"
             ]
         ),
         .testTarget(
-            name: "DataLayerTests",
-            dependencies: ["DataLayer"]
+            name: "InfrastructureLayerTests",
+            dependencies: ["InfrastructureLayer"]
         ),
     ]
 )
