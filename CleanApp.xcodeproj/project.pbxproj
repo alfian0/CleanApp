@@ -22,6 +22,7 @@
 				CharacterFeature/DataLayer,
 				CharacterFeature/DomainLayer,
 				CharacterFeature/PresentationLayer,
+				HTTPClient/HTTPClient,
 			);
 			target = 6BB486092CF5640F00EECAEE /* CleanApp */;
 		};

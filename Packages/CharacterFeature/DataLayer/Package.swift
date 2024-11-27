@@ -16,7 +16,8 @@ let package = Package(
             targets: ["DataLayer"]),
     ],
     dependencies: [
-        .package(path: "../DomainLayer")
+        .package(path: "../DomainLayer"),
+        .package(path: "../../HTTPClient")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -24,7 +25,8 @@ let package = Package(
         .target(
             name: "DataLayer",
             dependencies: [
-                "DomainLayer"
+                "DomainLayer",
+                "HTTPClient"
             ]
         ),
         .testTarget(
