@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import HTTPClient
+@testable import InfrastructureLayer
 
 final class AuthHTTPClientDecoratorTests: XCTestCase {
     func test_validTokenWith401Response() async throws {

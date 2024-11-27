@@ -1,5 +1,5 @@
 import XCTest
-import HTTPClient
+import InfrastructureLayer
 
 final class HTTPClientTests: XCTestCase {
     func test_load_timeout() async {

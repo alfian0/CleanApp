@@ -7,7 +7,7 @@
 
 import XCTest
 import URLRequestBuilder
-@testable import HTTPClient
+@testable import InfrastructureLayer
 
 final class HTTPClientIntegrationTests: XCTestCase {
     func test_loadCharacterEndpoint_returnsValidResponse() async throws {

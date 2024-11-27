@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import HTTPClient
+@testable import InfrastructureLayer
 
 final class HTTPClientErrorMapperDecoratorTests: XCTestCase {
     func test_load_serverError500() async {
@@ -33,17 +33,17 @@ final class HTTPClientErrorMapperDecoratorTests: XCTestCase {
         }
     }
     
-//    func test_load_unhandledError() async {
-//        let url = URL(string: "https://example.com")!
-//        let sut = makeSUT(url: url, statusCode: 201)
-//        do {
-//            _ = try await sut.load(urlRequest: URLRequest(url: url))
-//            XCTFail()
-//        } catch {
-//            XCTAssertTrue(error is HTTPClientError)
-//            XCTAssertEqual(error as? HTTPClientError, .unhandledError)
-//        }
-//    }
+    func test_load_unhandledError() async {
+        let url = URL(string: "https://example.com")!
+        let sut = makeSUT(url: url, statusCode: 201)
+        do {
+            _ = try await sut.load(urlRequest: URLRequest(url: url))
+            XCTFail()
+        } catch {
+            XCTAssertTrue(error is HTTPClientError)
+            XCTAssertEqual(error as? HTTPClientError, .serverError(statusCode: 201))
+        }
+    }
     
     func test_load_unauthorizedError() async {
         let url = URL(string: "https://example.com")!

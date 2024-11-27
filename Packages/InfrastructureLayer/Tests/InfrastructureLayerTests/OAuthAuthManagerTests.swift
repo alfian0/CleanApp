@@ -8,7 +8,7 @@
 import XCTest
 import OAuthSwift
 import KeychainSwift
-@testable import HTTPClient
+@testable import InfrastructureLayer
 
 final class OAuthAuthManagerTests: XCTestCase {
     func testValidToken_ReturnsToken_WhenTokenIsValid() throws {

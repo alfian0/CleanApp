@@ -9,49 +9,49 @@ import CoreLocation
 import Combine
 import DomainLayer
 
-final class LocationManagerImpl: NSObject, ObservableObject, LocationManager {
+public final class LocationManagerImpl: NSObject, ObservableObject, LocationManager {
     private let locationManager = CLLocationManager()
     
     // Published properties for SwiftUI
-    @Published var location: CLLocation?
-    @Published var authorizationStatus: CLAuthorizationStatus = .notDetermined
-    @Published var error: Error?
+    @Published public var location: CLLocation?
+    @Published public var authorizationStatus: CLAuthorizationStatus = .notDetermined
+    @Published public var error: Error?
 
-    override init() {
+    public override init() {
         super.init()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
     }
     
     // Request authorization
-    func requestAuthorization() {
+    public func requestAuthorization() {
         locationManager.requestWhenInUseAuthorization()
     }
     
     // Start updating location
-    func startUpdatingLocation() {
+    public func startUpdatingLocation() {
         locationManager.startUpdatingLocation()
     }
     
     // Stop updating location
-    func stopUpdatingLocation() {
+    public func stopUpdatingLocation() {
         locationManager.stopUpdatingLocation()
     }
 }
 
 // MARK: - CLLocationManagerDelegate
 extension LocationManagerImpl: @preconcurrency CLLocationManagerDelegate {
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+    public func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         authorizationStatus = manager.authorizationStatus
     }
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let newLocation = locations.last {
             location = newLocation
         }
     }
     
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+    public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         self.error = error
         print("Location manager failed with error: \(error.localizedDescription)")
     }

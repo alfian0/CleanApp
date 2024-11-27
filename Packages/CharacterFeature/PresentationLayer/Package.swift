@@ -16,7 +16,8 @@ let package = Package(
             targets: ["PresentationLayer"]),
     ],
     dependencies: [
-        .package(path: "../DomainLayer")
+        .package(path: "../DomainLayer"),
+        .package(path: "../InfrastructureLayer/Networking/InfrastructureLayer")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -24,7 +25,8 @@ let package = Package(
         .target(
             name: "PresentationLayer",
             dependencies: [
-                "DomainLayer"
+                "DomainLayer",
+                "InfrastructureLayer"
             ]
         ),
         .testTarget(

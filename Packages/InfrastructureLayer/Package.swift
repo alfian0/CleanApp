@@ -18,7 +18,8 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/OAuthSwift/OAuthSwift.git", from: "2.2.0"),
         .package(url: "https://github.com/evgenyneu/keychain-swift.git", from: "24.0.0"),
-        .package(url: "https://github.com/ParableHealth/URLRequestBuilder.git", from: "0.0.2")
+        .package(url: "https://github.com/ParableHealth/URLRequestBuilder.git", from: "0.0.2"),
+        .package(path: "../CharacterFeature/DomainLayer")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -28,7 +29,8 @@ let package = Package(
             dependencies: [
                 "OAuthSwift",
                 .product(name: "KeychainSwift", package: "keychain-swift"),
-                "URLRequestBuilder"
+                "URLRequestBuilder",
+                "DomainLayer"
             ]
         ),
         .testTarget(
