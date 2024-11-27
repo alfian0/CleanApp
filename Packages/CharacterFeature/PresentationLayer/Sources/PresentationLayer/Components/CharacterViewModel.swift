@@ -12,14 +12,12 @@ final class CharacterViewModel: ObservableObject {
     @Published private(set) var id: Int
     @Published private(set) var name: String
     @Published private(set) var species: String
-    @Published private(set) var image: String
     @Published private(set) var uiImage: UIImage?
     
     public init(id: Int, name: String, species: String, image: String) {
         self.id = id
         self.name = name
         self.species = species
-        self.image = image
         Task {
             do {
                 let (data, _) = try await URLSession.shared.data(from: URL(string: image)!)
