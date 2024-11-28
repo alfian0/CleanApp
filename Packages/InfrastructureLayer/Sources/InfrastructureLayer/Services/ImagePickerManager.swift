@@ -9,25 +9,22 @@ import UIKit
 import DomainLayer
 
 @MainActor
-final class UIImagePickerManager: NSObject, ImagePickerManager {
+final class ImagePickerManager: NSObject {
     private let picker = UIImagePickerController()
-    private var continuation: CheckedContinuation<UIImage, Error>?
+    private var completion: ((Result<UIImage, Error>) -> Void)?
     
     override init() {
         super.init()
         picker.delegate = self
     }
     
-    func pickImage(from sourceType: UIImagePickerController.SourceType) async throws -> UIImage {
+    func pickImage(from sourceType: UIImagePickerController.SourceType, completion: @escaping (Result<UIImage, Error>) -> Void) {
+        self.completion = completion
         guard UIImagePickerController.isSourceTypeAvailable(sourceType) else {
-            throw PickerError.sourceUnavailable
+            self.completion?(.failure(PickerError.sourceUnavailable))
+            return
         }
         picker.sourceType = sourceType
-        
-        return try await withCheckedThrowingContinuation { continuation in
-            self.continuation = continuation
-            UIApplication.shared.windows.first?.rootViewController?.present(picker, animated: true)
-        }
     }
     
     private func dismissPicker() {
@@ -35,28 +32,25 @@ final class UIImagePickerManager: NSObject, ImagePickerManager {
     }
 }
 
-extension UIImagePickerManager: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension ImagePickerManager: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         guard let image = info[.originalImage] as? UIImage else {
-            continuation?.resume(throwing: PickerError.invalidImage)
-            continuation = nil
+            self.completion?(.failure(PickerError.invalidImage))
             dismissPicker()
             return
         }
         
-        continuation?.resume(returning: image)
-        continuation = nil
+        self.completion?(.success(image))
         dismissPicker()
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        continuation?.resume(throwing: PickerError.cancelled)
-        continuation = nil
+        completion?(.failure(PickerError.cancelled))
         dismissPicker()
     }
 }
 
-extension UIImagePickerManager {
+extension ImagePickerManager {
     enum PickerError: Error {
         case sourceUnavailable
         case invalidImage
