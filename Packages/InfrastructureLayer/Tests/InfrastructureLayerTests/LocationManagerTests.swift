@@ -18,7 +18,7 @@ final class LocationManagerTests: XCTestCase {
         manager.simulatedResult = .success(expectedLocation)
         let sut = LocationManager(manager: manager)
         XCTAssertNotNil(manager.delegate)
-        sut.fetchLocation { result in
+        sut.startUpdatingLocation { result in
             switch result {
             case .success(let location):
                 XCTAssertEqual(location, expectedLocation)
@@ -40,7 +40,7 @@ final class LocationManagerTests: XCTestCase {
         manager.simulatedResult = .failure(LocationManager.LocationManagerError.locationUpdateTimedOut)
         let sut = LocationManager(manager: manager)
         XCTAssertNotNil(manager.delegate)
-        sut.fetchLocation { result in
+        sut.startUpdatingLocation { result in
             switch result {
             case .success:
                 XCTFail()
@@ -86,7 +86,9 @@ final class LocationManagerTests: XCTestCase {
                 print(error)
             }
         }
-        manager.stopUpdatingLocation()
+        XCTAssertFalse(spy.didCallStopUpdatingLocation)
+        sut.stopUpdatingLocation()
+        XCTAssertTrue(spy.didCallStopUpdatingLocation)
     }
 }
 

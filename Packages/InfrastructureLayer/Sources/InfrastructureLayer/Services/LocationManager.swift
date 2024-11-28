@@ -19,7 +19,7 @@ final class LocationManager: NSObject {
         self.manager.delegate = self
     }
     
-    func fetchLocation(completion: @escaping (Result<CLLocation, Error>) -> Void) {
+    func startUpdatingLocation(completion: @escaping (Result<CLLocation, Error>) -> Void) {
         self.completion = completion
         
         switch manager.authorizationStatus {
@@ -32,13 +32,6 @@ final class LocationManager: NSObject {
         @unknown default:
             completion(.failure(LocationManagerError.unknownAuthorizationStatus))
         }
-    }
-
-    // The selector method for when the timer fires
-    @objc
-    private func locationUpdateTimedOut() {
-        stopUpdatingLocation()
-        completion?(.failure(LocationManagerError.locationUpdateTimedOut))
     }
     
     func stopUpdatingLocation () {
@@ -88,7 +81,7 @@ final class LocationManagerStream {
         }
     }
     
-    func finish() {
+    func stopUpdatingLocation() {
         manager.stopUpdatingLocation()
     }
 
@@ -97,7 +90,7 @@ final class LocationManagerStream {
         return AsyncThrowingStream { [weak self] continuation in
             self?.continuation = continuation
             // Start fetching location by calling the fetchLocation method of LocationManager
-            self?.manager.fetchLocation { result in
+            self?.manager.startUpdatingLocation { result in
                 switch result {
                 case .success(let location):
                     continuation.yield(location)
