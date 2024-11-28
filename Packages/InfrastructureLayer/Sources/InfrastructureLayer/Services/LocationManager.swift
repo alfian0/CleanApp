@@ -8,18 +8,18 @@
 import Foundation
 import CoreLocation
 
-final class LocationManager: NSObject {
+public final class LocationManager: NSObject {
     private let manager: CLLocationManager
     private var completion: ((Result<CLLocation, Error>) -> Void)?
-    var finish: (() -> Void)?
+    public var finish: (() -> Void)?
     
-    init(manager: CLLocationManager = CLLocationManager()) {
+    public init(manager: CLLocationManager = CLLocationManager()) {
         self.manager = manager
         super.init()
         self.manager.delegate = self
     }
     
-    func startUpdatingLocation(completion: @escaping (Result<CLLocation, Error>) -> Void) {
+    public func startUpdatingLocation(completion: @escaping (Result<CLLocation, Error>) -> Void) {
         self.completion = completion
         
         switch manager.authorizationStatus {
@@ -34,24 +34,24 @@ final class LocationManager: NSObject {
         }
     }
     
-    func stopUpdatingLocation () {
+    public func stopUpdatingLocation () {
         manager.stopUpdatingLocation()
         finish?()
     }
 }
 
 extension LocationManager: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let lastLocation = locations.last {
             completion?(.success(lastLocation))
         }
     }
     
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {
+    public func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {
         completion?(.failure(error))
     }
     
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+    public func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         switch manager.authorizationStatus  {
         case .authorizedAlways, .authorizedWhenInUse:
             manager.startUpdatingLocation()
@@ -62,18 +62,18 @@ extension LocationManager: CLLocationManagerDelegate {
 }
 
 extension LocationManager {
-    enum LocationManagerError: Error {
+    public enum LocationManagerError: Error {
         case authorizationDenied
         case unknownAuthorizationStatus
         case locationUpdateTimedOut
     }
 }
 
-final class LocationManagerStream {
+public final class LocationManagerStream {
     private var manager: LocationManager
     private var continuation: AsyncThrowingStream<CLLocation, Error>.Continuation?
     
-    init(manager: LocationManager) {
+    public init(manager: LocationManager) {
         self.manager = manager
         self.manager.finish = { [weak self] in
             self?.continuation?.finish()
@@ -81,11 +81,11 @@ final class LocationManagerStream {
         }
     }
     
-    func stopUpdatingLocation() {
+    public func stopUpdatingLocation() {
         manager.stopUpdatingLocation()
     }
 
-    func fetchLocation() -> AsyncThrowingStream<CLLocation, Error> {
+    public func fetchLocation() -> AsyncThrowingStream<CLLocation, Error> {
         // Create an AsyncStream that will emit CLLocation values
         return AsyncThrowingStream { [weak self] continuation in
             self?.continuation = continuation

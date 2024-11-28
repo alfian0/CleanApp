@@ -7,7 +7,7 @@
 
 import XCTest
 import CoreLocation
-@testable import InfrastructureLayer
+import InfrastructureLayer
 
 final class LocationManagerTests: XCTestCase {
     func test_fetchLocation_withSuccessLocation() {
