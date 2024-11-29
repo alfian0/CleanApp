@@ -7,11 +7,12 @@
 
 import Foundation
 import CoreLocation
+import DomainLayer
 
-public final class LocationManager: NSObject {
+public final class LocationManagerImpl: NSObject, LocationManager {
     private let manager: CLLocationManager
     private var completion: ((Result<CLLocation, Error>) -> Void)?
-    public var finish: (() -> Void)?
+    private var continuation: AsyncThrowingStream<CLLocation, Error>.Continuation?
     
     public init(manager: CLLocationManager = CLLocationManager()) {
         self.manager = manager
@@ -34,13 +35,30 @@ public final class LocationManager: NSObject {
         }
     }
     
+    public func startUpdatingLocation() -> AsyncThrowingStream<CLLocation, Error> {
+        // Create an AsyncStream that will emit CLLocation values
+        return AsyncThrowingStream { [weak self] continuation in
+            self?.continuation = continuation
+            self?.startUpdatingLocation(completion: { result in
+                switch result {
+                case .success(let location):
+                    continuation.yield(location)
+                case .failure(let error):
+                    continuation.finish(throwing: error)
+                }
+            })
+        }
+    }
+    
     public func stopUpdatingLocation () {
         manager.stopUpdatingLocation()
-        finish?()
+        continuation?.finish()
+        continuation = nil
+        completion = nil
     }
 }
 
-extension LocationManager: CLLocationManagerDelegate {
+extension LocationManagerImpl: CLLocationManagerDelegate {
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let lastLocation = locations.last {
             completion?(.success(lastLocation))
@@ -56,48 +74,15 @@ extension LocationManager: CLLocationManagerDelegate {
         case .authorizedAlways, .authorizedWhenInUse:
             manager.startUpdatingLocation()
         default:
-            stopUpdatingLocation()
+            manager.stopUpdatingLocation()
         }
     }
 }
 
-extension LocationManager {
+extension LocationManagerImpl {
     public enum LocationManagerError: Error {
         case authorizationDenied
         case unknownAuthorizationStatus
         case locationUpdateTimedOut
-    }
-}
-
-public final class LocationManagerStream {
-    private var manager: LocationManager
-    private var continuation: AsyncThrowingStream<CLLocation, Error>.Continuation?
-    
-    public init(manager: LocationManager) {
-        self.manager = manager
-        self.manager.finish = { [weak self] in
-            self?.continuation?.finish()
-            self?.continuation = nil
-        }
-    }
-    
-    public func stopUpdatingLocation() {
-        manager.stopUpdatingLocation()
-    }
-
-    public func fetchLocation() -> AsyncThrowingStream<CLLocation, Error> {
-        // Create an AsyncStream that will emit CLLocation values
-        return AsyncThrowingStream { [weak self] continuation in
-            self?.continuation = continuation
-            // Start fetching location by calling the fetchLocation method of LocationManager
-            self?.manager.startUpdatingLocation { result in
-                switch result {
-                case .success(let location):
-                    continuation.yield(location)
-                case .failure(let error):
-                    continuation.finish(throwing: error)
-                }
-            }
-        }
     }
 }

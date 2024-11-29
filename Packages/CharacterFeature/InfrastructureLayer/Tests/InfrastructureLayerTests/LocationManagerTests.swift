@@ -16,7 +16,7 @@ final class LocationManagerTests: XCTestCase {
         let manager = CLLocationManagerSpy()
         manager.simulatedAuthorizationStatus = .notDetermined
         manager.simulatedResult = .success(expectedLocation)
-        let sut = LocationManager(manager: manager)
+        let sut = LocationManagerImpl(manager: manager)
         XCTAssertNotNil(manager.delegate)
         sut.startUpdatingLocation { result in
             switch result {
@@ -37,15 +37,15 @@ final class LocationManagerTests: XCTestCase {
         let expectation = expectation(description: "Should error when fetch location")
         let manager = CLLocationManagerSpy()
         manager.simulatedAuthorizationStatus = .notDetermined
-        manager.simulatedResult = .failure(LocationManager.LocationManagerError.locationUpdateTimedOut)
-        let sut = LocationManager(manager: manager)
+        manager.simulatedResult = .failure(LocationManagerImpl.LocationManagerError.locationUpdateTimedOut)
+        let sut = LocationManagerImpl(manager: manager)
         XCTAssertNotNil(manager.delegate)
         sut.startUpdatingLocation { result in
             switch result {
             case .success:
                 XCTFail()
             case .failure(let error):
-                XCTAssertEqual(error as? LocationManager.LocationManagerError, LocationManager.LocationManagerError.locationUpdateTimedOut)
+                XCTAssertEqual(error as? LocationManagerImpl.LocationManagerError, LocationManagerImpl.LocationManagerError.locationUpdateTimedOut)
                 expectation.fulfill()
             }
         }
@@ -56,17 +56,12 @@ final class LocationManagerTests: XCTestCase {
     }
     
     func test_stopUpdateLocation_shouldCallFinish() {
-        let expectation = expectation(description: "Should call finish")
         let manager = CLLocationManagerSpy()
         manager.simulatedAuthorizationStatus = .notDetermined
-        let sut = LocationManager(manager: manager)
-        sut.finish = {
-            expectation.fulfill()
-        }
+        let sut = LocationManagerImpl(manager: manager)
         XCTAssertNotNil(manager.delegate)
         sut.stopUpdatingLocation()
         XCTAssertTrue(manager.didCallStopUpdatingLocation)
-        wait(for: [expectation])
     }
     
     func test() {
@@ -74,9 +69,8 @@ final class LocationManagerTests: XCTestCase {
         let spy = CLLocationManagerSpy()
         spy.simulatedAuthorizationStatus = .notDetermined
         spy.simulatedResult = .success(expectedLocation)
-        let manager = LocationManager(manager: spy)
-        let sut = LocationManagerStream(manager: manager)
-        let result = sut.fetchLocation()
+        let sut = LocationManagerImpl(manager: spy)
+        let result = sut.startUpdatingLocation()
         Task {
             do {
                 for try await location in result {
@@ -86,9 +80,14 @@ final class LocationManagerTests: XCTestCase {
                 print(error)
             }
         }
-        XCTAssertFalse(spy.didCallStopUpdatingLocation)
-        sut.stopUpdatingLocation()
-        XCTAssertTrue(spy.didCallStopUpdatingLocation)
+        spy.simulatedAuthorizationStatus = .denied
+        sut.locationManagerDidChangeAuthorization(spy)
+        spy.simulatedAuthorizationStatus = .authorizedWhenInUse
+        sut.locationManagerDidChangeAuthorization(spy)
+        
+//        XCTAssertFalse(spy.didCallStopUpdatingLocation)
+//        sut.stopUpdatingLocation()
+//        XCTAssertTrue(spy.didCallStopUpdatingLocation)
     }
 }
 

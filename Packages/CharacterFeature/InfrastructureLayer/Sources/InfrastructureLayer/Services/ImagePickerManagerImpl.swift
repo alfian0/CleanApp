@@ -8,8 +8,7 @@
 import UIKit
 import DomainLayer
 
-@MainActor
-final class ImagePickerManager: NSObject {
+final class ImagePickerManagerImpl: NSObject, ImagePickerManager {
     private let picker = UIImagePickerController()
     private var completion: ((Result<UIImage, Error>) -> Void)?
     
@@ -27,12 +26,25 @@ final class ImagePickerManager: NSObject {
         picker.sourceType = sourceType
     }
     
+    func pickImage(from sourceType: UIImagePickerController.SourceType) async throws -> UIImage {
+        try await withCheckedThrowingContinuation { continuation in
+            pickImage(from: sourceType) { result in
+                switch result {
+                case .success(let image):
+                    continuation.resume(returning: image)
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    
     private func dismissPicker() {
         picker.presentingViewController?.dismiss(animated: true)
     }
 }
 
-extension ImagePickerManager: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension ImagePickerManagerImpl: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         guard let image = info[.originalImage] as? UIImage else {
             self.completion?(.failure(PickerError.invalidImage))
@@ -50,7 +62,7 @@ extension ImagePickerManager: UIImagePickerControllerDelegate, UINavigationContr
     }
 }
 
-extension ImagePickerManager {
+extension ImagePickerManagerImpl {
     enum PickerError: Error {
         case sourceUnavailable
         case invalidImage

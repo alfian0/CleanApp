@@ -21,8 +21,8 @@
 				CharacterFeature/CharacterFeature,
 				CharacterFeature/DataLayer,
 				CharacterFeature/DomainLayer,
+				CharacterFeature/InfrastructureLayer,
 				CharacterFeature/PresentationLayer,
-				InfrastructureLayer,
 			);
 			target = 6BB486092CF5640F00EECAEE /* CleanApp */;
 		};
