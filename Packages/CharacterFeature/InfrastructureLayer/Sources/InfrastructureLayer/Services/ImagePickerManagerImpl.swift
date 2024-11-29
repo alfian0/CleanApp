@@ -26,19 +26,6 @@ final class ImagePickerManagerImpl: NSObject, ImagePickerManager {
         picker.sourceType = sourceType
     }
     
-    func pickImage(from sourceType: UIImagePickerController.SourceType) async throws -> UIImage {
-        try await withCheckedThrowingContinuation { continuation in
-            pickImage(from: sourceType) { result in
-                switch result {
-                case .success(let image):
-                    continuation.resume(returning: image)
-                case .failure(let error):
-                    continuation.resume(throwing: error)
-                }
-            }
-        }
-    }
-    
     private func dismissPicker() {
         picker.presentingViewController?.dismiss(animated: true)
     }

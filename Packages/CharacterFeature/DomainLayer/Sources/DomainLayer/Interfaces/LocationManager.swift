@@ -9,5 +9,5 @@ import CoreLocation
 
 public protocol LocationManager {
     func startUpdatingLocation(completion: @escaping (Result<CLLocation, Error>) -> Void)
-    func startUpdatingLocation() -> AsyncThrowingStream<CLLocation, Error>
+    func stopUpdatingLocation ()
 }

@@ -7,11 +7,11 @@ import PresentationLayer
 
 public struct CharacterFeature {
     @MainActor
-    public static func makeCharacterListView() -> CharacterListView {
+    public static func makeCharacterListView() -> MapView {
         let repository = CharacterRepositoryImpl()
         let usecase = CharacterListUsecaseImpl(characterRepository: repository)
         let viewModel = CharacterListViewModel(characterListUseCase: usecase)
         
-        return CharacterListView(viewModel: viewModel)
+        return MapView()
     }
 }

@@ -10,5 +10,4 @@ import UIKit
 @MainActor
 public protocol ImagePickerManager {
     func pickImage(from sourceType: UIImagePickerController.SourceType, completion: @escaping (Result<UIImage, Error>) -> Void)
-    func pickImage(from sourceType: UIImagePickerController.SourceType) async throws -> UIImage
 }

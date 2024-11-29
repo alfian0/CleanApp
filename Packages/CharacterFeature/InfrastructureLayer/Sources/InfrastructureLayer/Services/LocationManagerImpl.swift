@@ -12,7 +12,6 @@ import DomainLayer
 public final class LocationManagerImpl: NSObject, LocationManager {
     private let manager: CLLocationManager
     private var completion: ((Result<CLLocation, Error>) -> Void)?
-    private var continuation: AsyncThrowingStream<CLLocation, Error>.Continuation?
     
     public init(manager: CLLocationManager = CLLocationManager()) {
         self.manager = manager
@@ -35,25 +34,8 @@ public final class LocationManagerImpl: NSObject, LocationManager {
         }
     }
     
-    public func startUpdatingLocation() -> AsyncThrowingStream<CLLocation, Error> {
-        // Create an AsyncStream that will emit CLLocation values
-        return AsyncThrowingStream { [weak self] continuation in
-            self?.continuation = continuation
-            self?.startUpdatingLocation(completion: { result in
-                switch result {
-                case .success(let location):
-                    continuation.yield(location)
-                case .failure(let error):
-                    continuation.finish(throwing: error)
-                }
-            })
-        }
-    }
-    
     public func stopUpdatingLocation () {
         manager.stopUpdatingLocation()
-        continuation?.finish()
-        continuation = nil
         completion = nil
     }
 }

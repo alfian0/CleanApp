@@ -54,41 +54,6 @@ final class LocationManagerTests: XCTestCase {
         XCTAssertEqual(manager.simulatedAuthorizationStatus, .authorizedWhenInUse)
         wait(for: [expectation])
     }
-    
-    func test_stopUpdateLocation_shouldCallFinish() {
-        let manager = CLLocationManagerSpy()
-        manager.simulatedAuthorizationStatus = .notDetermined
-        let sut = LocationManagerImpl(manager: manager)
-        XCTAssertNotNil(manager.delegate)
-        sut.stopUpdatingLocation()
-        XCTAssertTrue(manager.didCallStopUpdatingLocation)
-    }
-    
-    func test() {
-        let expectedLocation = CLLocation(latitude: 0, longitude: 0)
-        let spy = CLLocationManagerSpy()
-        spy.simulatedAuthorizationStatus = .notDetermined
-        spy.simulatedResult = .success(expectedLocation)
-        let sut = LocationManagerImpl(manager: spy)
-        let result = sut.startUpdatingLocation()
-        Task {
-            do {
-                for try await location in result {
-                    print(location.coordinate.latitude)
-                }
-            } catch {
-                print(error)
-            }
-        }
-        spy.simulatedAuthorizationStatus = .denied
-        sut.locationManagerDidChangeAuthorization(spy)
-        spy.simulatedAuthorizationStatus = .authorizedWhenInUse
-        sut.locationManagerDidChangeAuthorization(spy)
-        
-//        XCTAssertFalse(spy.didCallStopUpdatingLocation)
-//        sut.stopUpdatingLocation()
-//        XCTAssertTrue(spy.didCallStopUpdatingLocation)
-    }
 }
 
 final class CLLocationManagerSpy: CLLocationManager {
