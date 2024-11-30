@@ -12,7 +12,7 @@ public struct CharacterModel: Sendable {
     public let species: String
     public let gender: String
     public let image: String
-    
+
     public init(id: Int, name: String, status: String, species: String, gender: String, image: String) {
         self.id = id
         self.name = name

@@ -8,7 +8,8 @@
 import UIKit
 import DomainLayer
 
-final class ImagePickerManagerImpl: NSObject, ImagePickerManager {
+@MainActor
+final class ImagePickerManagerImpl: NSObject {
     private let picker = UIImagePickerController()
     private var completion: ((Result<UIImage, Error>) -> Void)?
     

@@ -21,7 +21,8 @@ final class LocationManagerTests: XCTestCase {
         sut.startUpdatingLocation { result in
             switch result {
             case .success(let location):
-                XCTAssertEqual(location, expectedLocation)
+                XCTAssertEqual(location.coordinate.latitude, expectedLocation.coordinate.latitude)
+                XCTAssertEqual(location.coordinate.longitude, expectedLocation.coordinate.longitude)
                 expectation.fulfill()
             case .failure:
                 XCTFail()

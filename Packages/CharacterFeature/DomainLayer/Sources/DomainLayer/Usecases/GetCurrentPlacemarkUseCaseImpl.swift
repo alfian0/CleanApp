@@ -1,11 +1,9 @@
 //
-//  FetchUserAddressUseCaseImpl.swift
+//  GetCurrentPlacemarkUseCaseImpl.swift
 //  DomainLayer
 //
 //  Created by Alfian on 29/11/24.
 //
-
-import CoreLocation
 
 public final class GetCurrentPlacemarkUseCaseImpl: GetCurrentPlacemarkUseCase {
     private let locationManager: LocationManager
@@ -16,35 +14,26 @@ public final class GetCurrentPlacemarkUseCaseImpl: GetCurrentPlacemarkUseCase {
         self.geocodingService = geocodingService
     }
 
-    public func execute() async throws -> CLPlacemark {
-        try await withCheckedThrowingContinuation { continuation in
-            locationManager.startUpdatingLocation { [weak self] result in
-                switch result {
-                case .success(let location):
-                    self?.geocodingService.reverseGeocode(location: location, completion: { result in
-                        switch result {
-                        case .success(let placemarks):
-                            if let firstPlacemark = placemarks?.first {
-                                continuation.resume(returning: firstPlacemark)
-                            } else {
-                                continuation.resume(throwing: LocationManagerError.noPlacemarkFound)
-                            }
-                        case .failure(let error):
-                            continuation.resume(throwing: error)
-                        }
-                        self?.locationManager.stopUpdatingLocation()
-                    })
-                case .failure(let error):
-                    continuation.resume(throwing: error)
-                }
-            }
-        }
+    public func execute() async throws -> PlacemarkModel {
+        return PlacemarkModel(
+            name: "placemark.name",
+            country: "placemark.country",
+            administrativeArea: "placemark.administrativeArea",
+            locality: "placemark.locality",
+            postalCode: "placemark.postalCode",
+            isoCountryCode: "placemark.isoCountryCode",
+            location: LocationModel(
+                coordinate: CoordinateModel(
+                    latitude: 0,
+                    longitude: 0
+                )
+            )
+        )
     }
 }
 
-
-extension GetCurrentPlacemarkUseCaseImpl {
-    public enum LocationManagerError: Error {
+public extension GetCurrentPlacemarkUseCaseImpl {
+    enum LocationManagerError: Error {
         case noPlacemarkFound
     }
 }

@@ -11,7 +11,7 @@ import DomainLayer
 
 public final class LocationManagerImpl: NSObject, LocationManager {
     private let manager: CLLocationManager
-    private var completion: ((Result<CLLocation, Error>) -> Void)?
+    private var completion: ((Result<LocationModel, Error>) -> Void)?
     
     public init(manager: CLLocationManager = CLLocationManager()) {
         self.manager = manager
@@ -19,7 +19,7 @@ public final class LocationManagerImpl: NSObject, LocationManager {
         self.manager.delegate = self
     }
     
-    public func startUpdatingLocation(completion: @escaping (Result<CLLocation, Error>) -> Void) {
+    public func startUpdatingLocation(completion: @escaping (Result<LocationModel, Error>) -> Void) {
         self.completion = completion
         
         switch manager.authorizationStatus {
@@ -43,7 +43,13 @@ public final class LocationManagerImpl: NSObject, LocationManager {
 extension LocationManagerImpl: CLLocationManagerDelegate {
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let lastLocation = locations.last {
-            completion?(.success(lastLocation))
+            let location = LocationModel(
+                coordinate: CoordinateModel(
+                    latitude: lastLocation.coordinate.latitude,
+                    longitude: lastLocation.coordinate.longitude
+                )
+            )
+            completion?(.success(location))
         }
     }
     

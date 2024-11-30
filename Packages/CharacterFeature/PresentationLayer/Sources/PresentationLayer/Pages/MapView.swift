@@ -44,7 +44,9 @@ public class MapViewModel: ObservableObject {
         let usecase = usecase
         Task {
             do {
-                region = try await usecase.execute()
+                let _region = try await usecase.execute()
+                region.center.latitude = _region.latitude
+                region.center.longitude = _region.longitude
             } catch {
                 print(error)
             }

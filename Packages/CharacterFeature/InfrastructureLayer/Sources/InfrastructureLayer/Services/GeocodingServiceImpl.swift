@@ -15,12 +15,28 @@ public final class GeocodingServiceImpl: GeocodingService {
         self.geocoder = geocoder
     }
 
-    public func reverseGeocode(location: CLLocation, completion: @escaping (Result<[CLPlacemark]?, Error>) -> Void) {
-        geocoder.reverseGeocodeLocation(location) { placemarks, error in
+    public func reverseGeocode(location: LocationModel, completion: @escaping (Result<[PlacemarkModel], Error>) -> Void) {
+        geocoder
+            .reverseGeocodeLocation(
+                CLLocation(
+                    latitude: location.coordinate.latitude,
+                    longitude: location.coordinate.longitude
+                )
+            ) { placemarks, error in
             if let error = error {
                 completion(.failure(error))
             } else {
-                completion(.success(placemarks))
+                let placemarks = placemarks?.map({ placemark in
+                    PlacemarkModel(
+                        name: placemark.name,
+                        country: placemark.country,
+                        administrativeArea: placemark.administrativeArea,
+                        locality: placemark.locality,
+                        postalCode: placemark.postalCode,
+                        isoCountryCode: placemark.isoCountryCode,
+                        location: location)
+                })
+                completion(.success(placemarks ?? []))
             }
         }
     }

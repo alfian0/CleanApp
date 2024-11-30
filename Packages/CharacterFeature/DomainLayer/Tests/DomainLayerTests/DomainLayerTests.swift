@@ -1,5 +1,5 @@
-import XCTest
 @testable import DomainLayer
+import XCTest
 
 final class DomainLayerTests: XCTestCase {
     func testExample() throws {

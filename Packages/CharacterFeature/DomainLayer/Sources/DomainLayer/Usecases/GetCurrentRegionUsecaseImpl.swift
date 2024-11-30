@@ -9,29 +9,21 @@ import MapKit
 
 public final class GetCurrentRegionUsecaseImpl: GetCurrentRegionUsecase {
     private let locationManager: LocationManager
-    
+
     public init(locationManager: LocationManager) {
         self.locationManager = locationManager
     }
-    
-    public func execute() async throws -> MKCoordinateRegion {
-        try await withCheckedThrowingContinuation { [weak self] continuation in
-            self?.locationManager.startUpdatingLocation { result in
+
+    public func execute() async throws -> CoordinateModel {
+        try await withCheckedThrowingContinuation { continuation in
+            locationManager.startUpdatingLocation { [weak self] result in
                 switch result {
                 case .success(let location):
-                    continuation.resume(
-                        returning: MKCoordinateRegion(
-                            center: location.coordinate,
-                            span: MKCoordinateSpan(
-                                latitudeDelta: 0.05,
-                                longitudeDelta: 0.05
-                            )
-                        )
-                    )
-                    self?.locationManager.stopUpdatingLocation()
+                    continuation.resume(returning: location.coordinate)
                 case .failure(let error):
                     continuation.resume(throwing: error)
                 }
+                self?.locationManager.stopUpdatingLocation()
             }
         }
     }
