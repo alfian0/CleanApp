@@ -13,7 +13,7 @@ public struct PlacemarkModel: Sendable {
     public let postalCode: String?
     public let isoCountryCode: String?
     public let location: LocationModel
-    
+
     public init(
         name: String?,
         country: String?,

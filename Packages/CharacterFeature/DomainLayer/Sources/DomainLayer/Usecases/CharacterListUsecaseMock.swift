@@ -25,7 +25,7 @@ public final class CharacterListUsecaseMock: CharacterListUsecase {
                 species: "Human",
                 gender: "Male",
                 image: "https://rickandmortyapi.com/api/character/avatar/2.jpeg"
-            )
+            ),
         ])
     }
 }

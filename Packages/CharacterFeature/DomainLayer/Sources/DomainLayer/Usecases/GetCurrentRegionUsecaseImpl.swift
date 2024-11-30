@@ -18,9 +18,9 @@ public final class GetCurrentRegionUsecaseImpl: GetCurrentRegionUsecase {
         try await withCheckedThrowingContinuation { continuation in
             locationManager.startUpdatingLocation { [weak self] result in
                 switch result {
-                case .success(let location):
+                case let .success(location):
                     continuation.resume(returning: location.coordinate)
-                case .failure(let error):
+                case let .failure(error):
                     continuation.resume(throwing: error)
                 }
                 self?.locationManager.stopUpdatingLocation()

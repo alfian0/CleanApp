@@ -7,7 +7,7 @@
 
 public struct LocationModel: Sendable {
     public let coordinate: CoordinateModel
-    
+
     public init(coordinate: CoordinateModel) {
         self.coordinate = coordinate
     }

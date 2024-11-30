@@ -7,14 +7,14 @@ let package = Package(
     name: "DomainLayer",
     platforms: [
         .iOS(.v14),
-        .macOS(.v12)
+        .macOS(.v12),
     ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "DomainLayer",
             targets: ["DomainLayer"]
-        )
+        ),
     ],
     dependencies: [
     ],
@@ -29,6 +29,6 @@ let package = Package(
         .testTarget(
             name: "DomainLayerTests",
             dependencies: ["DomainLayer"]
-        )
+        ),
     ]
 )
