@@ -6,5 +6,5 @@
 //
 
 public protocol GetCurrentPlacemarkUseCase {
-    func execute() async throws -> PlacemarkModel
+  func execute() async throws -> PlacemarkModel
 }

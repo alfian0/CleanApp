@@ -6,5 +6,5 @@
 //
 
 public protocol CharacterRepository {
-    func getCharacters() async throws -> ListModel<CharacterModel>
+  func getCharacters() async throws -> ListModel<CharacterModel>
 }

@@ -1,0 +1,8 @@
+--swiftversion 5
+--allman false
+--indent 2
+--tabwidth 2
+--maxwidth 120
+--commas inline
+
+--disable wrapMultilineStatementBraces

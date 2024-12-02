@@ -8,22 +8,22 @@
 import Foundation
 
 public final class HTTPClientErrorMapperDecorator: HTTPClientProtocol {
-    private let decoratee: HTTPClientProtocol
-    
-    public init(decoratee: HTTPClientProtocol) {
-        self.decoratee = decoratee
+  private let decoratee: HTTPClientProtocol
+
+  public init(decoratee: HTTPClientProtocol) {
+    self.decoratee = decoratee
+  }
+
+  public func load(urlRequest: URLRequest) async throws -> (Data, URLResponse) {
+    let result = try await decoratee.load(urlRequest: urlRequest)
+    guard let httpResponse = result.1 as? HTTPURLResponse else {
+      throw HTTPClientError.invalidResponse
     }
-    
-    public func load(urlRequest: URLRequest) async throws -> (Data, URLResponse) {
-        let result = try await decoratee.load(urlRequest: urlRequest)
-        guard let httpResponse = result.1 as? HTTPURLResponse else {
-            throw HTTPClientError.invalidResponse
-        }
-        
-        guard (200...299).contains(httpResponse.statusCode) else {
-            throw HTTPClientError.serverError(statusCode: httpResponse.statusCode)
-        }
-        
-        return result
+
+    guard (200 ... 299).contains(httpResponse.statusCode) else {
+      throw HTTPClientError.serverError(statusCode: httpResponse.statusCode)
     }
+
+    return result
+  }
 }

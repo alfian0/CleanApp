@@ -6,6 +6,6 @@
 //
 
 public protocol LocationManager {
-    func startUpdatingLocation(completion: @escaping (Result<LocationModel, Error>) -> Void)
-    func stopUpdatingLocation()
+  func startUpdatingLocation(completion: @escaping (Result<LocationModel, Error>) -> Void)
+  func stopUpdatingLocation()
 }

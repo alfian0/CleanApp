@@ -6,9 +6,9 @@
 //
 
 public struct ListModel<T: Sendable>: Sendable {
-    public let results: [T]
+  public let results: [T]
 
-    public init(results: [T]) {
-        self.results = results
-    }
+  public init(results: [T]) {
+    self.results = results
+  }
 }

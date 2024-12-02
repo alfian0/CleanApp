@@ -6,5 +6,5 @@
 //
 
 public protocol GeocodingService {
-    func reverseGeocode(location: LocationModel, completion: @escaping (Result<[PlacemarkModel], Error>) -> Void)
+  func reverseGeocode(location: LocationModel, completion: @escaping (Result<[PlacemarkModel], Error>) -> Void)
 }

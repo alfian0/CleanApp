@@ -4,21 +4,21 @@
 import Foundation
 
 public protocol HTTPClientProtocol {
-    func load(urlRequest: URLRequest) async throws -> (Data, URLResponse)
+  func load(urlRequest: URLRequest) async throws -> (Data, URLResponse)
 }
 
 public final class HTTPClient: HTTPClientProtocol {
-    private let session: URLSession
-    
-    public init(session: URLSession = .shared) {
-        self.session = session
+  private let session: URLSession
+
+  public init(session: URLSession = .shared) {
+    self.session = session
+  }
+
+  public func load(urlRequest: URLRequest) async throws -> (Data, URLResponse) {
+    do {
+      return try await session.data(for: urlRequest)
+    } catch {
+      throw HTTPClientError.networkError(error)
     }
-    
-    public func load(urlRequest: URLRequest) async throws -> (Data, URLResponse) {
-        do {
-            return try await session.data(for: urlRequest)
-        } catch {
-            throw HTTPClientError.networkError(error)
-        }
-    }
+  }
 }

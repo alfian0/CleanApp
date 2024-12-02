@@ -5,51 +5,52 @@
 //  Created by Alfian on 29/11/24.
 //
 
-import SwiftUI
-import MapKit
 import DomainLayer
 import InfrastructureLayer
+import MapKit
+import SwiftUI
 
 public struct MapView: View {
-    @StateObject var viewModel: MapViewModel = MapViewModel(usecase: GetCurrentRegionUsecaseImpl(locationManager: LocationManagerImpl()))
+  @StateObject var viewModel: MapViewModel =
+    .init(usecase: GetCurrentRegionUsecaseImpl(locationManager: LocationManagerImpl()))
 
-    public init() {}
-    
-    public var body: some View {
-        Map(coordinateRegion: $viewModel.region)
-            .ignoresSafeArea()
-            .onAppear {
-                viewModel.fetchAddress()
-            }
-    }
+  public init() {}
+
+  public var body: some View {
+    Map(coordinateRegion: $viewModel.region)
+      .ignoresSafeArea()
+      .onAppear {
+        viewModel.fetchAddress()
+      }
+  }
 }
 
 #Preview {
-    MapView()
+  MapView()
 }
 
 @MainActor
 public class MapViewModel: ObservableObject {
-    @Published var region: MKCoordinateRegion = MKCoordinateRegion(
-        center: CLLocationCoordinate2D(latitude: 37.7749, longitude: -122.4194),
-        span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
-    )
-    private let usecase: GetCurrentRegionUsecase
-    
-    public init(usecase: GetCurrentRegionUsecase) {
-        self.usecase = usecase
+  @Published var region: MKCoordinateRegion = .init(
+    center: CLLocationCoordinate2D(latitude: 37.7749, longitude: -122.4194),
+    span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+  )
+  private let usecase: GetCurrentRegionUsecase
+
+  public init(usecase: GetCurrentRegionUsecase) {
+    self.usecase = usecase
+  }
+
+  func fetchAddress() {
+    let usecase = usecase
+    Task {
+      do {
+        let region = try await usecase.execute()
+        self.region.center.latitude = region.latitude
+        self.region.center.longitude = region.longitude
+      } catch {
+        print(error)
+      }
     }
-    
-    func fetchAddress() {
-        let usecase = usecase
-        Task {
-            do {
-                let _region = try await usecase.execute()
-                region.center.latitude = _region.latitude
-                region.center.longitude = _region.longitude
-            } catch {
-                print(error)
-            }
-        }
-    }
+  }
 }

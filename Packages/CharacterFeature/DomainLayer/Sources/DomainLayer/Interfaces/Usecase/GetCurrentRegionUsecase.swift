@@ -6,5 +6,5 @@
 //
 
 public protocol GetCurrentRegionUsecase {
-    func execute() async throws -> CoordinateModel
+  func execute() async throws -> CoordinateModel
 }

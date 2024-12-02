@@ -6,6 +6,6 @@
 //
 
 struct ListResponse: Decodable {
-    let info: InfoResponse
-    let results: [CharacterResponse]
+  let info: InfoResponse
+  let results: [CharacterResponse]
 }

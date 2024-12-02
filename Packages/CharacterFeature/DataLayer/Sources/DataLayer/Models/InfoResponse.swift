@@ -6,8 +6,8 @@
 //
 
 struct InfoResponse: Decodable {
-    let count: Int
-    let pages: Int
-    let next: String?
-    let pre: String?
+  let count: Int
+  let pages: Int
+  let next: String?
+  let pre: String?
 }

@@ -5,15 +5,15 @@
 //  Created by Alfian on 26/11/24.
 //
 
-import SwiftUI
 import CharacterFeature
+import SwiftUI
 
 struct ContentView: View {
-    var body: some View {
-        CharacterFeature.makeCharacterListView()
-    }
+  var body: some View {
+    CharacterFeature.makeCharacterListView()
+  }
 }
 
 #Preview {
-    ContentView()
+  ContentView()
 }

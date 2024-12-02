@@ -6,13 +6,13 @@
 //
 
 public final class CharacterListUsecaseImpl: CharacterListUsecase {
-    private let characterRepository: CharacterRepository
+  private let characterRepository: CharacterRepository
 
-    public init(characterRepository: CharacterRepository) {
-        self.characterRepository = characterRepository
-    }
+  public init(characterRepository: CharacterRepository) {
+    self.characterRepository = characterRepository
+  }
 
-    public func execute() async throws -> ListModel<CharacterModel> {
-        try await characterRepository.getCharacters()
-    }
+  public func execute() async throws -> ListModel<CharacterModel> {
+    try await characterRepository.getCharacters()
+  }
 }
