@@ -1,0 +1,11 @@
+custom_rules:
+  no_import_in_domain:
+    name: "No Restricted Imports in Data"
+    regex: 'import (PresentationLayer)'
+    message: "Domain module should not import Presentation layers."
+    severity: error
+    excluded: # Optional: Exclude specific directories or files
+      - Tests/DataLayerTests
+    included: # Restrict to your domain module
+      - Sources/DataLayer
+

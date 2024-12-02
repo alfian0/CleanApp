@@ -1,10 +1,10 @@
 custom_rules:
   no_import_in_domain:
     name: "No Restricted Imports in Domain"
-    regex: 'import (UIKit|Foundation|CoreLocation)'
+    regex: '^import\s+\w+' # Matches any 'import ModuleName'
     message: "Domain module should not import UIKit, Foundation, or infrastructure layers."
     severity: error
     excluded: # Optional: Exclude specific directories or files
-      - Sources/SomeOtherModule
+      - Tests/DomainLayerTests
     included: # Restrict to your domain module
-      - Sources/Domain
+      - Sources/DomainLayer

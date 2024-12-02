@@ -5,8 +5,6 @@
 //  Created by Alfian on 29/11/24.
 //
 
-import MapKit
-
 public final class GetCurrentRegionUsecaseImpl: GetCurrentRegionUsecase {
   private let locationManager: LocationManager
 

@@ -1,2 +1,6 @@
 disabled_rules:
-- function_body_length
+  - function_body_length
+included:
+  - CleanApp
+excluded:
+  - Packages
