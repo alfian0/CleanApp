@@ -91,8 +91,8 @@
 				6BB486062CF5640F00EECAEE /* Sources */,
 				6BB486072CF5640F00EECAEE /* Frameworks */,
 				6BB486082CF5640F00EECAEE /* Resources */,
-				6BD93DB12CFD883A00E7395C /* Swiftlint */,
 				6BD93DB22CFD8A0200E7395C /* Swiftformat */,
+				6BD93DB12CFD883A00E7395C /* Swiftlint */,
 			);
 			buildRules = (
 			);

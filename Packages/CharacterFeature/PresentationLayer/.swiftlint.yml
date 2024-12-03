@@ -4,9 +4,9 @@ custom_rules:
     regex: 'import (DataLayer)'
     message: "Presentation module should not import Data layers."
     severity: error
-    excluded: # Optional: Exclude specific directories or files
-      - Tests/PresentationLayerTests
-    included: # Restrict to your domain module
-      - Sources/PresentationLayer
+excluded:
+  - Tests/PresentationLayerTests
+included:
+  - Sources/PresentationLayer
 
 

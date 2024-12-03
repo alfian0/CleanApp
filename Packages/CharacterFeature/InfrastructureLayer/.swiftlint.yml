@@ -4,7 +4,7 @@ custom_rules:
     regex: 'import (PresentationLayer|DataLayer)'
     message: "Domain module should not import Presentation layers."
     severity: error
-    excluded: # Optional: Exclude specific directories or files
-      - Tests/InfrastructureLayerTests
-    included: # Restrict to your domain module
-      - Sources/InfrastructureLayer
+excluded:
+  - Tests/InfrastructureLayerTests
+included:
+  - Sources/InfrastructureLayer
