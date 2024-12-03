@@ -7,11 +7,11 @@ import PresentationLayer
 
 public enum CharacterFeature {
   @MainActor
-  public static func makeCharacterListView() -> MapView {
+  public static func makeCharacterListView() -> CharacterListView {
     let repository = CharacterRepositoryImpl()
     let usecase = CharacterListUsecaseImpl(characterRepository: repository)
     let viewModel = CharacterListViewModel(characterListUseCase: usecase)
 
-    return MapView()
+    return CharacterListView(viewModel: viewModel)
   }
 }

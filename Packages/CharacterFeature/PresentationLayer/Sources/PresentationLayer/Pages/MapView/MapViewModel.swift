@@ -1,33 +1,13 @@
 //
-//  MapView.swift
+//  MapViewModel.swift
 //  PresentationLayer
 //
-//  Created by Alfian on 29/11/24.
+//  Created by Alfian on 03/12/24.
 //
 
 import DomainLayer
-import InfrastructureLayer
+import Foundation
 import MapKit
-import SwiftUI
-
-public struct MapView: View {
-  @StateObject var viewModel: MapViewModel =
-    .init(usecase: GetCurrentRegionUsecaseImpl(locationManager: LocationManagerImpl()))
-
-  public init() {}
-
-  public var body: some View {
-    Map(coordinateRegion: $viewModel.region)
-      .ignoresSafeArea()
-      .onAppear {
-        viewModel.fetchAddress()
-      }
-  }
-}
-
-#Preview {
-  MapView()
-}
 
 @MainActor
 public class MapViewModel: ObservableObject {

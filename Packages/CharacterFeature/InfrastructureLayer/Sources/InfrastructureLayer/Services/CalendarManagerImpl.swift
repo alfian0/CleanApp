@@ -8,10 +8,10 @@
 import DomainLayer
 import Foundation
 
-public final class CalendarManagerImpl {
+public final class CalendarManagerImpl: CalendarManager {
   private let calendar: Calendar
 
-  public init(calendar: Calendar = .current) {
+  public init(calendar: Calendar) {
     self.calendar = calendar
   }
 
