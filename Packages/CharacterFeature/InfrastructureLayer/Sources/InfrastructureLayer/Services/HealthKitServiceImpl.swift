@@ -5,8 +5,8 @@
 //  Created by Alfian on 03/12/24.
 //
 
-import HealthKit
 import DomainLayer
+import HealthKit
 
 public class HealthKitServiceImpl: HealthKitService {
   private let healthStore: HKHealthStore
@@ -31,7 +31,7 @@ public class HealthKitServiceImpl: HealthKitService {
   }
 
   public func fetchStepCount(startDate: Double, endDate: Double,
-                      completion: @escaping @Sendable ([Double: Int]?, Error?) -> Void) {
+                             completion: @escaping @Sendable ([Double: Int]?, Error?) -> Void) {
     let startDate = Date(timeIntervalSince1970: startDate)
     let endDate = Date(timeIntervalSince1970: endDate)
     let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount)!

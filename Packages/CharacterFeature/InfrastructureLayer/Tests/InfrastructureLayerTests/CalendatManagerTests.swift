@@ -23,7 +23,7 @@ final class CalendatManagerTests: XCTestCase {
     let daysInMonth = sut.daysInMonth(timeInterval: date.timeIntervalSince1970)
 
     let firstMonth = sut.firstOfMonth(timeInterval: date.timeIntervalSince1970)
-    XCTAssertEqual(firstMonth, 1732986000.0)
+    XCTAssertEqual(firstMonth, 1_732_986_000.0)
 
     XCTAssertEqual(daysInMonth, 31)
 

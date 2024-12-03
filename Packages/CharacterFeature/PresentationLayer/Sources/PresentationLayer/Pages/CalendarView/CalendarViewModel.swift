@@ -13,14 +13,9 @@ import InfrastructureLayer
 public final class CalendarViewModel: ObservableObject {
   @Published var labels: [String] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
   @Published var days: [String] = []
-  private let calendar: Calendar
   private let calendarDaysGridUsecase: CalendarDaysGridUseCase
 
-  init(
-    calendar: Calendar,
-    calendarDaysGridUsecase: CalendarDaysGridUseCase
-  ) {
-    self.calendar = calendar
+  init(calendarDaysGridUsecase: CalendarDaysGridUseCase) {
     self.calendarDaysGridUsecase = calendarDaysGridUsecase
   }
 

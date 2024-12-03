@@ -10,7 +10,7 @@ final class DomainLayerTests: XCTestCase {
     components.hour = 14
     components.minute = 14
     let date = Calendar.current.date(from: components)!
-    
+
     let sut = CalendarDaysGridUseCaseImpl(manager: CalendarManagerStub())
     let totalSquare = sut.execute(timeInterval: date.timeIntervalSince1970)
     let expectedTotalSquare: [String] = [
@@ -80,6 +80,6 @@ final class CalendarManagerStub: CalendarService {
   }
 
   func firstOfMonth(timeInterval _: Double) -> Double {
-    1732986000.0
+    1_732_986_000.0
   }
 }

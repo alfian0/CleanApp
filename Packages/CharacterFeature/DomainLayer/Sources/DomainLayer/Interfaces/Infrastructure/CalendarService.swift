@@ -1,5 +1,5 @@
 //
-//  CalendarManager.swift
+//  CalendarService.swift
 //  DomainLayer
 //
 //  Created by Alfian on 03/12/24.
