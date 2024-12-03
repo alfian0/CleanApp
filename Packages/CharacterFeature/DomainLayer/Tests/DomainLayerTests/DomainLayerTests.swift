@@ -3,10 +3,16 @@ import XCTest
 
 final class DomainLayerTests: XCTestCase {
   func test_TotalSquareUsecaseImpl() {
-    let date = DateDomainModel(year: 2024, month: 12, day: 03, hour: 14, minute: 14)
-
+    var components = DateComponents()
+    components.year = 2024
+    components.month = 12
+    components.day = 3
+    components.hour = 14
+    components.minute = 14
+    let date = Calendar.current.date(from: components)!
+    
     let sut = CalendarDaysGridUseCaseImpl(manager: CalendarManagerStub())
-    let totalSquare = sut.execute(model: date)
+    let totalSquare = sut.execute(timeInterval: date.timeIntervalSince1970)
     let expectedTotalSquare: [String] = [
       "1",
       "2",
@@ -61,19 +67,19 @@ final class DomainLayerTests: XCTestCase {
 // day: 03
 // week: 0 -> sunday
 final class CalendarManagerStub: CalendarService {
-  func daysInMonth(date _: DateDomainModel) -> Int {
+  func daysInMonth(timeInterval _: Double) -> Int {
     31
   }
 
-  func dayOfDate(date _: DateDomainModel) -> Int {
+  func dayOfDate(timeInterval _: Double) -> Int {
     3
   }
 
-  func weekOfDate(date _: DateDomainModel) -> Int {
+  func weekOfDate(timeInterval _: Double) -> Int {
     0
   }
 
-  func firstOfMonth(date _: DateDomainModel) -> DateDomainModel {
-    DateDomainModel(year: 2024, month: 12, day: 1, hour: 0, minute: 0)
+  func firstOfMonth(timeInterval _: Double) -> Double {
+    1732986000.0
   }
 }
