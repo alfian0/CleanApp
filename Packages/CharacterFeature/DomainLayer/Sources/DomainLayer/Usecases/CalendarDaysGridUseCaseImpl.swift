@@ -6,9 +6,9 @@
 //
 
 public final class CalendarDaysGridUseCaseImpl: CalendarDaysGridUseCase {
-  private let manager: CalendarManager
+  private let manager: CalendarService
 
-  public init(manager: CalendarManager) {
+  public init(manager: CalendarService) {
     self.manager = manager
   }
 

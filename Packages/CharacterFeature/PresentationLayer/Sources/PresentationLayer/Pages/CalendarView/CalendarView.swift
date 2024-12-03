@@ -57,7 +57,7 @@ public struct CalendarView: View {
   CalendarView(
     viewModel: CalendarViewModel(
       calendar: .current,
-      calendarDaysGridUsecase: CalendarDaysGridUseCaseImpl(manager: CalendarManagerImpl(calendar: .current))
+      calendarDaysGridUsecase: CalendarDaysGridUseCaseImpl(manager: CalendarServiceImpl(calendar: .current))
     )
   )
 }

@@ -13,7 +13,7 @@ final class CalendatManagerTests: XCTestCase {
   func test_CalendatManager() {
     let date = DateDomainModel(year: 2024, month: 12, day: 03, hour: 14, minute: 14)
 
-    let sut = CalendarManagerImpl(calendar: .current)
+    let sut = CalendarServiceImpl(calendar: .current)
     let daysInMonth = sut.daysInMonth(date: date)
 
     let firstMonth = sut.firstOfMonth(date: date)

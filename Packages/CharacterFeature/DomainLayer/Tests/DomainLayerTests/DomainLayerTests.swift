@@ -60,7 +60,7 @@ final class DomainLayerTests: XCTestCase {
 // days: 31
 // day: 03
 // week: 0 -> sunday
-final class CalendarManagerStub: CalendarManager {
+final class CalendarManagerStub: CalendarService {
   func daysInMonth(date _: DateDomainModel) -> Int {
     31
   }

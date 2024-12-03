@@ -8,7 +8,7 @@
 import DomainLayer
 import Foundation
 
-public final class CalendarManagerImpl: CalendarManager {
+public final class CalendarServiceImpl: CalendarService {
   private let calendar: Calendar
 
   public init(calendar: Calendar) {
