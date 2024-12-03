@@ -15,43 +15,27 @@ public final class CalendarManagerImpl: CalendarManager {
     self.calendar = calendar
   }
 
-  public func daysInMonth(date: DateDomainModel) -> Int {
-    let date = buildDate(from: date)
+  public func daysInMonth(timeInterval: Double) -> Int {
+    let date = Date(timeIntervalSince1970: timeInterval)
     return calendar.range(of: .day, in: .month, for: date)?.count ?? 0
   }
 
-  public func dayOfDate(date: DateDomainModel) -> Int {
-    let date = buildDate(from: date)
+  public func dayOfDate(timeInterval: Double) -> Int {
+    let date = Date(timeIntervalSince1970: timeInterval)
     let components = calendar.dateComponents([.day], from: date)
     return components.day ?? 0
   }
 
-  public func weekOfDate(date: DateDomainModel) -> Int {
-    let date = buildDate(from: date)
+  public func weekOfDate(timeInterval: Double) -> Int {
+    let date = Date(timeIntervalSince1970: timeInterval)
     let components = calendar.dateComponents([.weekday], from: date)
     return max((components.weekday ?? 0) - 1, 0)
   }
 
-  public func firstOfMonth(date: DateDomainModel) -> DateDomainModel {
-    let date = buildDate(from: date)
+  public func firstOfMonth(timeInterval: Double) -> Double {
+    let date = Date(timeIntervalSince1970: timeInterval)
     let components = calendar.dateComponents([.year, .month], from: date)
-    return DateDomainModel(
-      year: components.year ?? 0,
-      month: components.month ?? 0,
-      day: 1,
-      hour: 0,
-      minute: 0
-    )
-  }
-
-  private func buildDate(from model: DateDomainModel) -> Date {
-    var components = DateComponents()
-    components.year = model.year
-    components.month = model.month
-    components.day = model.day
-    components.hour = model.hour
-    components.minute = model.minute
-
-    return Calendar.current.date(from: components) ?? Date()
+    let result = calendar.date(from: components)
+    return result?.timeIntervalSince1970 ?? 0
   }
 }

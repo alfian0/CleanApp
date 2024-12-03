@@ -12,11 +12,11 @@ public final class CalendarDaysGridUseCaseImpl: CalendarDaysGridUseCase {
     self.manager = manager
   }
 
-  public func execute(model: DateDomainModel) -> [String] {
+  public func execute(timeInterval: Double) -> [String] {
     var totalSquare: [String] = []
-    let days = manager.daysInMonth(date: model)
-    let firstDayOfMonth = manager.firstOfMonth(date: model)
-    let startingSpace = manager.weekOfDate(date: firstDayOfMonth)
+    let days = manager.daysInMonth(timeInterval: timeInterval)
+    let firstDayOfMonth = manager.firstOfMonth(timeInterval: timeInterval)
+    let startingSpace = manager.weekOfDate(timeInterval: firstDayOfMonth)
     for index in 1 ... 42 {
       if index <= startingSpace || (index - startingSpace) > days {
         totalSquare.append("")

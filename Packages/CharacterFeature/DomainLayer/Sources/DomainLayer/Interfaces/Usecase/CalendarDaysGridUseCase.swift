@@ -6,5 +6,5 @@
 //
 
 public protocol CalendarDaysGridUseCase {
-  func execute(model: DateDomainModel) -> [String]
+  func execute(timeInterval: Double) -> [String]
 }

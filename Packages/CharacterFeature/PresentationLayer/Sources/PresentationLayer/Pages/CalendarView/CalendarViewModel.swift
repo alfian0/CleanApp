@@ -26,13 +26,6 @@ public final class CalendarViewModel: ObservableObject {
 
   func fetchCalendarDaysGrid() {
     let date = Date()
-    let model = DateDomainModel(
-      year: calendar.component(.year, from: date),
-      month: calendar.component(.month, from: date),
-      day: calendar.component(.day, from: date),
-      hour: calendar.component(.hour, from: date),
-      minute: calendar.component(.hour, from: date)
-    )
-    days = calendarDaysGridUsecase.execute(model: model)
+    days = calendarDaysGridUsecase.execute(timeInterval: date.timeIntervalSince1970)
   }
 }

@@ -6,8 +6,8 @@
 //
 
 public protocol CalendarManager {
-  func daysInMonth(date: DateDomainModel) -> Int
-  func dayOfDate(date: DateDomainModel) -> Int
-  func weekOfDate(date: DateDomainModel) -> Int
-  func firstOfMonth(date: DateDomainModel) -> DateDomainModel
+  func daysInMonth(timeInterval: Double) -> Int
+  func dayOfDate(timeInterval: Double) -> Int
+  func weekOfDate(timeInterval: Double) -> Int
+  func firstOfMonth(timeInterval: Double) -> Double
 }
