@@ -6,15 +6,16 @@
 //
 
 import HealthKit
+import DomainLayer
 
-public class HealthKitServiceImpl {
+public class HealthKitServiceImpl: HealthKitService {
   private let healthStore: HKHealthStore
 
-  init(healthStore: HKHealthStore) {
+  public init(healthStore: HKHealthStore) {
     self.healthStore = healthStore
   }
 
-  func requestAuthorization(completion: @escaping @Sendable (Bool, Error?) -> Void) {
+  public func requestAuthorization(completion: @escaping @Sendable (Bool, Error?) -> Void) {
     guard HKHealthStore.isHealthDataAvailable() else {
       completion(false, nil)
       return
@@ -29,8 +30,10 @@ public class HealthKitServiceImpl {
     }
   }
 
-  func fetchStepCount(startDate: Date, endDate: Date,
+  public func fetchStepCount(startDate: Double, endDate: Double,
                       completion: @escaping @Sendable ([Double: Int]?, Error?) -> Void) {
+    let startDate = Date(timeIntervalSince1970: startDate)
+    let endDate = Date(timeIntervalSince1970: endDate)
     let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
     let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: .strictStartDate)
 
