@@ -2,7 +2,7 @@
 import XCTest
 
 final class DomainLayerTests: XCTestCase {
-  func test_TotalSquareUsecaseImpl() {
+  func test_totalSquareUsecaseImpl() {
     var components = DateComponents()
     components.year = 2024
     components.month = 12

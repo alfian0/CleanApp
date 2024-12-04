@@ -22,11 +22,18 @@ public class HealthKitServiceImpl: HealthKitService {
     }
 
     let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
-
     let readTypes: Set<HKObjectType> = [stepType]
 
-    healthStore.requestAuthorization(toShare: nil, read: readTypes) { success, error in
-      completion(success, error)
+    let status = HKHealthStore.authorizationStatus(healthStore)(for: stepType)
+    switch status {
+    case .notDetermined:
+      healthStore.requestAuthorization(toShare: nil, read: readTypes) { success, error in
+        completion(success, error)
+      }
+    case .sharingDenied:
+      completion(false, nil)
+    default:
+      completion(true, nil)
     }
   }
 

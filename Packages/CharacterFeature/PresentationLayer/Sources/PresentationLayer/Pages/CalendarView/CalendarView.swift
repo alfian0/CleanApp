@@ -6,11 +6,16 @@
 //
 
 import DomainLayer
+import EventKit
 import InfrastructureLayer
 import SwiftUI
 
 public struct CalendarView: View {
   @StateObject var viewModel: CalendarViewModel
+
+  public init(viewModel: CalendarViewModel) {
+    _viewModel = .init(wrappedValue: viewModel)
+  }
 
   public var body: some View {
     ScrollView {
@@ -47,6 +52,10 @@ public struct CalendarView: View {
         .onAppear {
           viewModel.fetchCalendarDaysGrid()
         }
+
+        ForEach(viewModel.events, id: \.self) { event in
+          Text(event.title)
+        }
       }
       .padding(16)
     }
@@ -56,7 +65,8 @@ public struct CalendarView: View {
 #Preview {
   CalendarView(
     viewModel: CalendarViewModel(
-      calendarDaysGridUsecase: CalendarDaysGridUseCaseImpl(manager: CalendarServiceImpl(calendar: .current))
+      calendarDaysGridUsecase: CalendarDaysGridUseCaseImpl(manager: CalendarServiceImpl(calendar: .current)),
+      getEventListUsecase: GetEventListUsecaseImpl(service: EventStoreServiceImpl(eventStore: EKEventStore()))
     )
   )
 }
