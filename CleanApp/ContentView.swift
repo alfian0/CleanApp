@@ -10,8 +10,8 @@ import SwiftUI
 
 struct ContentView: View {
   var body: some View {
-//    CharacterFeature.makeCharacterListView()
-    CalendarViewFeature.makeCalendarView()
+    CharacterFeature.makeCharacterListView()
+//    CalendarViewFeature.makeCalendarView()
   }
 }
 

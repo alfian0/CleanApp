@@ -7,8 +7,10 @@
 
 public struct ListModel<T: Sendable>: Sendable {
   public let results: [T]
+  public let pages: Int
 
-  public init(results: [T]) {
+  public init(results: [T], pages: Int) {
     self.results = results
+    self.pages = pages
   }
 }

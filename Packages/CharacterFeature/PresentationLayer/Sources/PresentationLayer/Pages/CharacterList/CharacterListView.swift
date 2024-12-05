@@ -20,6 +20,11 @@ public struct CharacterListView: View {
       LazyVGrid(columns: [.init(.flexible()), .init(.flexible()), .init(.flexible())]) {
         ForEach(viewModel.characters, id: \.id) { character in
           CharacterView(viewModel: character)
+            .onAppear {
+              if viewModel.hasReachEnd(of: character) {
+                viewModel.fetchCharacters()
+              }
+            }
         }
       }
       .padding()

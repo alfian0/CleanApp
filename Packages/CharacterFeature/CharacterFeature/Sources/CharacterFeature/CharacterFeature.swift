@@ -10,7 +10,9 @@ import PresentationLayer
 public enum CharacterFeature {
   @MainActor
   public static func makeCharacterListView() -> CharacterListView {
-    let repository = CharacterRepositoryImpl()
+    let client = HTTPClient()
+    let wrapper = HTTPClientErrorMapperDecorator(decoratee: client)
+    let repository = CharacterRepositoryImpl(service: RickAndMortyServiceImpl(client: wrapper), decoder: JSONDecoder())
     let usecase = CharacterListUsecaseImpl(characterRepository: repository)
     let viewModel = CharacterListViewModel(characterListUseCase: usecase)
 

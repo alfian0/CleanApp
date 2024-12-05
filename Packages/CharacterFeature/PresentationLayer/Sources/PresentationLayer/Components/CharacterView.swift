@@ -11,7 +11,7 @@ struct CharacterView: View {
   @ObservedObject var viewModel: CharacterViewModel
 
   var body: some View {
-    LazyVStack {
+    VStack {
       if let image = viewModel.uiImage {
         Image(uiImage: image)
           .resizable()

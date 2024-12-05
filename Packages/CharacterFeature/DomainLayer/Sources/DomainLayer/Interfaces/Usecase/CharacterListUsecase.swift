@@ -6,5 +6,5 @@
 //
 
 public protocol CharacterListUsecase {
-  func execute() async throws -> ListModel<CharacterModel>
+  func execute(page: Int) async throws -> ListModel<CharacterModel>
 }

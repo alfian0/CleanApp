@@ -9,9 +9,9 @@ import SwiftUI
 
 @MainActor
 final class CharacterViewModel: ObservableObject {
-  @Published private(set) var id: Int
-  @Published private(set) var name: String
-  @Published private(set) var species: String
+  let id: Int
+  let name: String
+  let species: String
   @Published private(set) var uiImage: UIImage?
 
   public init(id: Int, name: String, species: String, image: String) {

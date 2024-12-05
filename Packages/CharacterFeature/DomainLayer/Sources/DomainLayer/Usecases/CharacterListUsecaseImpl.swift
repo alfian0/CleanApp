@@ -12,7 +12,7 @@ public final class CharacterListUsecaseImpl: CharacterListUsecase {
     self.characterRepository = characterRepository
   }
 
-  public func execute() async throws -> ListModel<CharacterModel> {
-    try await characterRepository.getCharacters()
+  public func execute(page: Int) async throws -> ListModel<CharacterModel> {
+    try await characterRepository.getCharacters(page: page)
   }
 }

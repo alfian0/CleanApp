@@ -8,24 +8,18 @@
 import DomainLayer
 import Foundation
 import InfrastructureLayer
-import URLRequestBuilder
 
 public final class CharacterRepositoryImpl: CharacterRepository {
+  private let service: RickAndMortyServiceImpl
   private let decoder: JSONDecoder
 
-  public init(decoder: JSONDecoder = JSONDecoder()) {
+  public init(service: RickAndMortyServiceImpl, decoder: JSONDecoder) {
+    self.service = service
     self.decoder = decoder
   }
 
-  public func getCharacters() async throws -> ListModel<CharacterModel> {
-    let baseUrl = URL(string: "https://rickandmortyapi.com/api/")!
-    let urlRequest = URLRequestBuilder(path: "character")
-      .method(.get)
-      .makeRequest(withBaseURL: baseUrl)
-
-    let client = HTTPClient()
-    let wrapper = HTTPClientErrorMapperDecorator(decoratee: client)
-    let (data, _) = try await wrapper.load(urlRequest: urlRequest)
+  public func getCharacters(page: Int) async throws -> ListModel<CharacterModel> {
+    let data = try await service.getCharacters(page: page)
     let result = try decoder.decode(ListResponse.self, from: data)
     let items = result.results.map {
       CharacterModel(
@@ -37,6 +31,6 @@ public final class CharacterRepositoryImpl: CharacterRepository {
         image: $0.image
       )
     }
-    return ListModel(results: items)
+    return ListModel(results: items, pages: result.info.pages)
   }
 }
